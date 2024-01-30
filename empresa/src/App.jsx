@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Asignacion from './views/Asignacion';
 import Equipos from './views/Equipos';
 import Proyectos from './views/Proyectos';
-import Contacto from './views/Contactanos';
+import Contactanos from './views/Contactanos';
 
 function App() {
 
@@ -14,7 +14,7 @@ function App() {
         <Route path='/' element={<Asignacion/>}></Route>
         <Route path='/Equipos' element={<Equipos/>}></Route>
         <Route path='/Proyectos' element={<Proyectos/>}></Route>
-        <Route path='/Contactanos' element={<Contacto/>}></Route>
+        <Route path='/Contactanos' element={<Contactanos/>}></Route>
        
       </Routes>
     </BrowserRouter>
