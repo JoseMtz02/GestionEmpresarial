@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
+<<<<<<< HEAD
 import { Link } from 'react-router-dom';
+=======
+>>>>>>> ff9a50cae9793aa445f38b0c846474e4e7235790
 
 function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,7 +32,11 @@ function Header() {
         <div className="relative" ref={dropdownRef}> {/* Contenedor con posición relativa */}
             <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+<<<<<<< HEAD
                     <a href="" className="flex items-center">
+=======
+                    <a href="#" className="flex items-center">
+>>>>>>> ff9a50cae9793aa445f38b0c846474e4e7235790
                         <img
                             src="https://flowbite.com/docs/images/logo.svg"
                             className="h-8"
@@ -55,12 +62,21 @@ function Header() {
                             className={`${isDropdownOpen ? 'block' : 'hidden'
                                 } absolute right-0 z-50 mt-2 w-44 bg-white rounded-md overflow-hidden shadow-xl`}
                         >
+<<<<<<< HEAD
                             <Link to = "/Equipos" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Equipo
                             </Link>
                             <Link to = "/Proyectos" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Proyectos
                             </Link>
+=======
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Equipo
+                            </a>
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Proyectos
+                            </a>
+>>>>>>> ff9a50cae9793aa445f38b0c846474e4e7235790
                             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Recursos
                             </a>
@@ -75,7 +91,11 @@ function Header() {
                                 <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Calendario Semanal</a>
                             </li>
                             <li>
+<<<<<<< HEAD
                                 <Link to = "/Contactanos" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Atención Al Cliente</Link>
+=======
+                                <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Atención Al Cliente</a>
+>>>>>>> ff9a50cae9793aa445f38b0c846474e4e7235790
                             </li>
                         </ul>
                     </div>
