@@ -204,31 +204,7 @@ h2{
     justify-content: space-between;
     flex-wrap: wrap;
 }
-.anuncioN{
-    flex: 0 0 calc(50% - 2rem);
-    flex-grow: 0;
-    background-color: var(--grisClaro);
-    margin-bottom: 2rem;
-    border-radius: 1rem;
-}
-.contenido_anuncioN{
-    padding: 1rem;
-}
-.contenido_anuncioN h3{
-    margin: 0;
-    font-size: 1.5rem;
-    text-align: center;
-    color: var(--azulmarino);
-    text-transform: uppercase;
-}
-.contenido_anuncioN p{
-    font-size: 1rem;
-    line-height: 1.3rem;
-    text-align: justify;
-}
-.anuncioN img{
-    border-radius: .5rem;
-}
+
 /* Contenido conócenos */
 .contenido_conocenos{
     display: grid;
