@@ -11,7 +11,7 @@ const LoginComponent = () => {
     });
 
     const Navegacion = useNavigate();
-    const [Error,setError] = useState('');
+    const [error,setError] = useState('');
 
     const acceder = (e) => {
         e.preventDefault();

@@ -3,7 +3,7 @@ import mysql from 'mysql';
 import cors from 'cors';
 import morgan from 'morgan';
 import  Jwt  from 'jsonwebtoken';
-
+import bcrypt from 'bcrypt';
 
 const app = express();
 app.use(express.json());
@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '',
     database: 'empresa_proyec',
   });
   
@@ -137,26 +137,34 @@ app.patch('/editarUsuario/:id', (peticion, respuesta) => {
   });
 });
   
-  
-
 app.post('/Login', (peticion, respuesta) => {
-  const sql = 'SELECT * from usuarios WHERE matricula = ? and contrasenia = ?'; 
-  console.log (peticion.body);
-  connection.query (sql, [peticion.body.matricula,peticion.body.contrasenia],(error,resultado) => {
-    if(error) return respuesta.json({
-      mensaje: 'error'
-    });
-    if(resultado.length > 0) {
-      const usuarios = resultado [0];
-      const token = Jwt.sign({usuario:'administrador'},'Raul',{expiresIn:'1d'});
-      respuesta.setHeader('Set-Cookie',`token = ${token}`)
-      return respuesta.json({
-        status: 'correcto', 
-        usuario: token
+  const { matricula, contrasenia } = peticion.body;
+
+  const sql = 'SELECT * FROM usuarios WHERE matricula = ?'; 
+  connection.query(sql, [matricula], (error, resultados) => {
+    if (error) {
+      console.error("Error en la consulta:", error.message);
+      return respuesta.status(500).json({ mensaje: "Error al buscar el usuario" });
+    }
+
+    if (resultados.length > 0) {
+      const usuario = resultados[0];
+      // Compara la contraseña ingresada con el hash almacenado
+      bcrypt.compare(contrasenia, usuario.contrasenia, (err, coinciden) => {
+        if (err) {
+          console.error("Error al verificar la contraseña:", err.message);
+          return respuesta.status(500).json({ mensaje: "Error al verificar la contraseña" });
+        }
+
+        if (coinciden) {
+          const token = Jwt.sign({ id: usuario.id_usuario, rol: usuario.rol_id }, 'tuClaveSecreta', { expiresIn: '1d' });
+          return respuesta.json({ status: 'correcto', usuario: token });
+        } else {
+          return respuesta.status(401).json({ status: 'error', error: 'Usuario y/o contraseña incorrectos' });
+        }
       });
-      
-    }else {
-      return respuesta.json({status: 'error',error:'usuario y contraseña incorrectas'})
+    } else {
+      return respuesta.status(404).json({ status: 'error', error: 'Usuario no encontrado' });
     }
   });
 });
