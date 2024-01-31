@@ -8,7 +8,7 @@ import negocios from "../img/negocios.webp";
 import prototipos from "../img/prototipos.webp";
 import proyecto from "../img/proyecto3.jpg";
 import Header from '../components/header';
-
+import { Link } from 'react-router-dom';
 
 
 
@@ -25,7 +25,7 @@ function Equipos() {
                   <div class="contenido_anuncio">
                       <h3>Diseñadores</h3>    
                     
-                      <a href="#" class="boton">Saber más...</a>
+                      <Link to = "/Diseñadores" class="boton">Saber más...</Link>
                   </div>
               </div>
   
@@ -38,7 +38,7 @@ function Equipos() {
                       Temas sobre verb to be ingles I,II en adelante que se llegue a dificultar 
                   
                       </p>
-                      <a href="#" class="boton">Saber más...</a>
+                      <Link to = "/Analistas" class="boton">Saber más...</Link>
                   </div>
               </div>
   
@@ -49,7 +49,7 @@ function Equipos() {
                       <p>
               Temas a tratar como c# java python los cuales se veran mas adelante 
                       </p>
-                      <a href="#" class="boton">Saber más...</a>
+                      <Link to = "/Programadores" class="boton">Saber más...</Link>
                   </div>
               </div>
   

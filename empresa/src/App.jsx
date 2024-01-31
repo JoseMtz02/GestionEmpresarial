@@ -5,6 +5,9 @@ import Asignacion from './views/Asignacion';
 import Equipos from './views/Equipos';
 import Proyectos from './views/Proyectos';
 import Contactanos from './views/Contactanos';
+import Programadores from './views/Programadores';
+import Analistas from './views/Analistas';
+import Diseñadores from './views/Diseñadores';
 import LoginComponent from './views/Login';
 
 function App() {
@@ -16,6 +19,9 @@ function App() {
         <Route path='/Equipos' element={<Equipos/>}></Route>
         <Route path='/Proyectos' element={<Proyectos/>}></Route>
         <Route path='/Contactanos' element={<Contactanos/>}></Route>
+        <Route path='/Programadores' element={<Programadores/>}></Route>
+        <Route path='/Analistas' element={<Analistas/>}></Route>
+        <Route path='/Diseñadores' element={<Diseñadores/>}></Route>
         <Route path='/Login' element={<LoginComponent/>}></Route>
         
        
