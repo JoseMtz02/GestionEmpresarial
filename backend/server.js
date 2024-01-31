@@ -15,8 +15,6 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'root',
     database: 'empresa_proyec',
-    password: '',
-    database: 'empresa_proyec',
   });
   
   connection.connect((error) => {
@@ -164,7 +162,7 @@ app.post('/Login', (peticion, respuesta) => {
 });
 
 // Iniciar server
-const PORT = 8081;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
