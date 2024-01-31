@@ -103,47 +103,6 @@ h2{
     text-transform: uppercase;
     font-weight: 800;
 }
-/* Header */
-.site-header{
-    /*background-color: var(--gris2);*/
-    /*background-image: url(/img/degradado.png);*/
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,60,121,1) 53%, rgba(2,0,36,1) 100%);
-    height: 10rem;
-    padding: 1rem 3rem 1rem 3rem;
-}
-.contenido_header{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.navegacion a{
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-    margin-right: 1rem;
-    display: inline-block;
-    font-weight: bold;
-}
-.navegacion a :last-of-type{
-    margin: 0;
-}
-.navegacion a:hover{
-    color: var(--azulpastel);
-}
-
-
-.iniciar-r a{
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-    margin-right: 1rem;
-    display: inline-block;
-    font-weight: bold;
-}
-.iniciar-r a:hover{
-    color: var(--azulpastel);
-}
 /* BLOQUES */
 .seccion{
     margin-top: 10rem;
@@ -193,71 +152,8 @@ h2{
 .contenido_centrado img{
     width: 50%;
 }
-/* BLOQUES NOSOTROS MISION VISION*/
-/* BLOQUES */
-.seccionN{
-    margin-top: 10rem;
-    margin-bottom: 3rem;
-}
-.contenedor-bloquesN{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-/* Contenido conócenos */
-.contenido_conocenos{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 3rem;
-    line-height: 1.5rem;
-    font-size: 1.2rem;
-    text-align: justify;
 
 
-}
-.texto-contenido blockquote{
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--gris1);
-    text-transform: uppercase;
-}
-/* FOOTER */
-.contenedor_footer{
-    display: flex;
-    text-align: center;
-    justify-content: center;
-}
-.site-footer{
-    background-color: var(--gris1);
-    margin: 0;
-    padding: 1rem 5rem;
-}
-.copyright p{
-    color: var(--grisClaro);
-    font-size: 1rem;
-    font-weight: 600;
-}
-.imagen{
-    text-align: center;
-}
-.equipo {
-    column-count:5;
-    column-gap: 3em;
-	column-rule: 1px solid #bbb;
-    text-align: center;
-    
-}
-.equipo img{
-    justify-content: center;
-   width: 100px;
-   height: 100px;
-    border-radius: 5rem;
-}
-.equipo p{
-    font-size: medium;
-    text-align: center;
-}
 .content{
     box-sizing: border-box;
     background: #181818;
@@ -268,6 +164,9 @@ h2{
     margin-left: auto;
     margin-right:auto ;
 }
+.agenda-form textarea {
+    color:#000;
+}
 .logo-agenda{
 text-align: center;
 font-size: 3rem;
@@ -275,7 +174,7 @@ text-transform: capitalize;
 color: #d3d3d3;
 }
 .logo-agenda span{
-    color: #71cde9;
+    color: #2300bd;
 }
 .agenda-wrapper{
 box-shadow: 0 0 20px 0 rgba(255, 255, 255, .3);
@@ -290,7 +189,10 @@ box-shadow: 0 0 20px 0 rgba(255, 255, 255, .3);
     margin: 0;
     padding: 1em;
 }
-
+textarea {
+    resize: vertical;
+    color: black;
+}
 .agenda-form form{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -317,7 +219,7 @@ grid-column: 1 / 3;
 
 .agenda-form form button:hover,
 .agenda-form form button:focus{
-    background: #006eff;
+    background: #1200b7;
     color: beige;
     transition: background-color 1s ease-out;
     outline: 0;
