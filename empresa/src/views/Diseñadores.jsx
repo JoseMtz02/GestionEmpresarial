@@ -1,48 +1,48 @@
-import React from 'react';
-import Header from "../components/header";
+import React from "react";
 import { Card, Typography } from "@material-tailwind/react";
+import Header from "../components/header";
 
-const TABLE_HEAD = ["Equipo", "Proyecto", "Fecha de Inicio", "Estado del Proyecto", "Acciones"];
+const TABLE_HEAD = ["Diseñador", "Proyecto", "Fecha de Inicio", "Estado del Proyecto", "Acciones"];
 
 const TABLE_ROWS = [
     {
-      equipo: "John Michael",
-      proyecto: "Manager",
+      name: "John Krieg",
+      proyecto: "Figma Login",
       date: "23/04/18",
       status: "enable",
     },
     {
-      equipo: "Alexa Liras",
-      proyecto: "Developer",
+      name: "Fernanda Liras",
+      proyecto: "Animaciones de video",
       date: "23/04/18",
       status: "disable",
     },
     {
-      equipo: "Laurent Perrier",
-      proyecto: "Executive",
+      name: "Laurent Pets",
+      proyecto: "Css y tailwind",
       date: "19/09/17",
       status: "progress",
     },
     {
-      equipo: "Michael Levi",
-      proyecto: "Developer",
+      name: "Manuel Levi",
+      proyecto: "Android",
       date: "24/12/08",
       status: "disable",
     },
     {
-      equipo: "Richard Gran",
+      name: "Richard Gran",
       proyecto: "Manager",
       date: "04/10/21",
       status: "enable",
     },
   ];
 
-function Proyectos () {
-    return(
-    <>
-    <Header></Header>
-    
-    <Card className="h-full w-full overflow-scroll">
+function Diseñadores (){
+    return (
+        <>
+        <Header> </Header>
+
+        <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -63,19 +63,19 @@ function Proyectos () {
           </tr>
         </thead>
         <tbody>
-          {TABLE_ROWS.map(({ equipo, proyecto, date, status, accion }, index) => {
+          {TABLE_ROWS.map(({ name, proyecto, date, status, accion }, index) => {
             const isLast = index === TABLE_ROWS.length - 1;
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
  
             return (
-              <tr key={equipo}>
+              <tr key={name}>
                 <td className={classes}>
                   <Typography
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {equipo}
+                    {name}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -113,9 +113,8 @@ function Proyectos () {
                     color="blue-gray"
                     className="font-medium"
                   >
-                    Editar
+                    Edit
                   </Typography>
-
                   <Typography
                     as="a"
                     href="#"
@@ -123,9 +122,8 @@ function Proyectos () {
                     color="blue-gray"
                     className="font-medium"
                   >
-                    Eliminar
+                    Delete
                   </Typography>
-                  
                   <Typography
                     as="a"
                     href="#"
@@ -133,7 +131,7 @@ function Proyectos () {
                     color="blue-gray"
                     className="font-medium"
                   >
-                    Agregar
+                    View
                   </Typography>
                 </td>
               </tr>
@@ -143,9 +141,8 @@ function Proyectos () {
       </table>
     </Card>
 
-    </>
- 
-	);
-};
+        </>
 
-export default Proyectos;
+    );
+};
+export default Diseñadores;
