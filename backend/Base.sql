@@ -1,7 +1,9 @@
+DROP DATABASE IF EXISTS empresa_proyec;
+
 CREATE DATABASE empresa_proyec;
 USE empresa_proyec;
 
--- Tabla de proyectos con historial de cambios en el estado
+-- Creación de tablas principales
 CREATE TABLE proyectos (
   id_proyecto INT PRIMARY KEY AUTO_INCREMENT,
   nombre_proyecto VARCHAR(255) UNIQUE NOT NULL,
@@ -19,14 +21,12 @@ CREATE TABLE historial_proyecto (
   FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto)
 );
 
--- Tabla de equipos
 CREATE TABLE equipos (
   id_equipo INT PRIMARY KEY AUTO_INCREMENT,
   nombre_equipo VARCHAR(255) UNIQUE NOT NULL,
   descripcion TEXT
 );
 
--- Tabla de miembros del equipo
 CREATE TABLE miembros_equipo (
   id_miembro INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
@@ -36,7 +36,6 @@ CREATE TABLE miembros_equipo (
   FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
 );
 
--- Tabla de asignaciones
 CREATE TABLE asignaciones (
   id_asignacion INT PRIMARY KEY AUTO_INCREMENT,
   id_proyecto INT,
@@ -45,7 +44,6 @@ CREATE TABLE asignaciones (
   FOREIGN KEY (id_miembro) REFERENCES miembros_equipo(id_miembro)
 );
 
--- Tabla de recursos consolidada
 CREATE TABLE recursos (
   id_recurso INT PRIMARY KEY AUTO_INCREMENT,
   id_proyecto INT,
@@ -57,25 +55,22 @@ CREATE TABLE recursos (
   FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto)
 );
 
--- Tabla de usuarios
-CREATE TABLE usuarios (
-  id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_usuario VARCHAR(100) NOT NULL,
-  contraseña VARCHAR(255) NOT NULL,
-  id_rol INT,
-  FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
-);
-
--- Tabla de roles
 CREATE TABLE roles (
   id_rol INT PRIMARY KEY AUTO_INCREMENT,
   nombre_rol VARCHAR(100) UNIQUE NOT NULL
 );
 
--- Inserción de roles predeterminados
+CREATE TABLE usuarios (
+  id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_usuario VARCHAR(100) NOT NULL,
+  contrasenia VARCHAR(255) NOT NULL,
+  rol_id INT,
+  matricula VARCHAR(255) UNIQUE,
+  FOREIGN KEY (rol_id) REFERENCES roles(id_rol)
+);
+
 INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Líder'), ('Miembro');
 
--- Tabla de relación entre líderes y equipos para múltiples líderes
 CREATE TABLE lideres_equipos (
   id_lider_equipo INT PRIMARY KEY AUTO_INCREMENT,
   id_usuario INT,
@@ -85,7 +80,6 @@ CREATE TABLE lideres_equipos (
   FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
 );
 
--- Tabla para rastrear ediciones de miembros del equipo por líderes
 CREATE TABLE ediciones_miembros (
   id_edicion INT PRIMARY KEY AUTO_INCREMENT,
   id_lider INT,
@@ -95,3 +89,36 @@ CREATE TABLE ediciones_miembros (
   FOREIGN KEY (id_lider) REFERENCES usuarios(id_usuario),
   FOREIGN KEY (id_miembro_editado) REFERENCES miembros_equipo(id_miembro)
 );
+
+CREATE TABLE cambios_proyectos (
+  id_cambio INT PRIMARY KEY AUTO_INCREMENT,
+  id_admin INT,
+  id_proyecto INT,
+  tipo_cambio ENUM('Edición', 'Eliminación'),
+  motivo TEXT,
+  fecha_cambio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_admin) REFERENCES usuarios(id_usuario),
+  FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto)
+);
+
+-- Creación de la tabla auxiliar para la secuencia de matrícula
+CREATE TABLE secuencia_matricula (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  siguiente_matricula INT NOT NULL
+);
+
+-- Inicialización de la tabla auxiliar con el primer valor de matrícula
+INSERT INTO secuencia_matricula (siguiente_matricula) VALUES (1);  -- Comienza con 1
+
+-- Ajuste del trigger para calcular la matrícula usando la tabla auxiliar
+DELIMITER $$
+CREATE TRIGGER before_usuario_insert
+BEFORE INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+  DECLARE next_val INT;
+  SELECT siguiente_matricula INTO next_val FROM secuencia_matricula ORDER BY id DESC LIMIT 1;
+  SET NEW.matricula = CONCAT('2239', next_val);
+  UPDATE secuencia_matricula SET siguiente_matricula = siguiente_matricula + 1 ORDER BY id DESC LIMIT 1;
+END$$
+DELIMITER ;
