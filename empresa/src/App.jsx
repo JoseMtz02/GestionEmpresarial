@@ -8,6 +8,7 @@ import Contactanos from './views/Contactanos';
 import Programadores from './views/Programadores';
 import Analistas from './views/Analistas';
 import Diseñadores from './views/Diseñadores';
+import LoginComponent from './views/Login';
 
 function App() {
 
@@ -21,6 +22,8 @@ function App() {
         <Route path='/Programadores' element={<Programadores/>}></Route>
         <Route path='/Analistas' element={<Analistas/>}></Route>
         <Route path='/Diseñadores' element={<Diseñadores/>}></Route>
+        <Route path='/Login' element={<LoginComponent/>}></Route>
+        
        
       </Routes>
     </BrowserRouter>

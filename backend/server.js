@@ -2,8 +2,8 @@ import express from 'express';
 import mysql from 'mysql';
 import cors from 'cors';
 import morgan from 'morgan';
-import bcrypt from 'bcrypt'; // Asegúrate de importar bcrypt
-
+import  Jwt  from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const app = express();
 app.use(express.json());
@@ -137,9 +137,40 @@ app.patch('/editarUsuario/:id', (peticion, respuesta) => {
   });
 });
   
-  
+app.post('/Login', (peticion, respuesta) => {
+  const { matricula, contrasenia } = peticion.body;
+
+  const sql = 'SELECT * FROM usuarios WHERE matricula = ?'; 
+  connection.query(sql, [matricula], (error, resultados) => {
+    if (error) {
+      console.error("Error en la consulta:", error.message);
+      return respuesta.status(500).json({ mensaje: "Error al buscar el usuario" });
+    }
+
+    if (resultados.length > 0) {
+      const usuario = resultados[0];
+      // Compara la contraseña ingresada con el hash almacenado
+      bcrypt.compare(contrasenia, usuario.contrasenia, (err, coinciden) => {
+        if (err) {
+          console.error("Error al verificar la contraseña:", err.message);
+          return respuesta.status(500).json({ mensaje: "Error al verificar la contraseña" });
+        }
+
+        if (coinciden) {
+          const token = Jwt.sign({ id: usuario.id_usuario, rol: usuario.rol_id }, 'tuClaveSecreta', { expiresIn: '1d' });
+          return respuesta.json({ status: 'correcto', usuario: token });
+        } else {
+          return respuesta.status(401).json({ status: 'error', error: 'Usuario y/o contraseña incorrectos' });
+        }
+      });
+    } else {
+      return respuesta.status(404).json({ status: 'error', error: 'Usuario no encontrado' });
+    }
+  });
+});
+
 // Iniciar server
-const PORT = 8081;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
