@@ -122,3 +122,41 @@ BEGIN
   UPDATE secuencia_matricula SET siguiente_matricula = siguiente_matricula + 1 ORDER BY id DESC LIMIT 1;
 END$$
 DELIMITER ;
+
+-- Iniciamos la inserción de datos --
+
+USE empresa_proyec;
+
+-- Crear equipos
+INSERT INTO equipos (nombre_equipo, descripcion) VALUES 
+('Equipo Desarrollo 1', 'Equipo dedicado al desarrollo de software'),
+('Equipo Desarrollo 2', 'Equipo dedicado al desarrollo de nuevos proyectos');
+
+-- Crear proyectos
+INSERT INTO proyectos (nombre_proyecto, descripcion, fecha_inicio, estado) VALUES 
+('Proyecto Alfa', 'Primer proyecto importante', '2022-01-01', 'En Curso'),
+('Proyecto Beta', 'Segundo proyecto importante', '2022-02-01', 'Pendiente');
+
+-- Insertar usuarios, incluyendo el Administrador y la Líder que son programadores
+INSERT INTO usuarios (nombre_usuario, contrasenia, rol_id) VALUES 
+('Guillermo', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Administrador')),
+('Alisson', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Líder')),
+('Raúl', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Miembro')),
+('Benito', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Miembro')),
+('José', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Miembro'));
+
+-- Insertar miembros del equipo
+INSERT INTO miembros_equipo (nombre, id_equipo, especialidad) VALUES 
+('Guillermo', 1, 'Programador'),
+('Alisson', 1, 'Programador'),
+('Raúl', 2, 'Programador'),
+('Benito', 2, 'Programador'),
+('José', 2, 'Programador');
+
+-- Asignar miembros del equipo a proyectos
+INSERT INTO asignaciones (id_proyecto, id_miembro) VALUES 
+((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Alfa'), 1),
+((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Beta'), 2),
+((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Alfa'), 3),
+((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Beta'), 4),
+((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Alfa'), 5);
