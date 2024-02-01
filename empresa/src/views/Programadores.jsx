@@ -7,19 +7,29 @@ const TABLE_HEAD = ["Programador", "Proyecto", "Fecha de Inicio", "Estado del Pr
 
 const Programadores = () => {
 
-  const [programadores, setProgramadores] = useState([]); // Estado para almacenar los datos de los programadores
+  const [programadores, setProgramadores] = useState([]);
 
   useEffect(() => {
-    // Realiza la solicitud al cargar el componente
     axios.get('http://localhost:8080/Programadores')
       .then(response => {
-        // Actualiza el estado con los datos recibidos
         setProgramadores(response.data);
       })
       .catch(error => {
         console.error('Error al obtener los datos de los programadores', error);
       });
   }, []);
+
+  // Función para manejar la eliminación de un programador
+  const eliminarProgramador = (id) => {
+    axios.delete(`http://localhost:8080/eliminarUsuario/${id}`)
+      .then(() => {
+        // Actualiza la lista de programadores para reflejar la eliminación
+        setProgramadores(programadores.filter(programador => programador.id !== id));
+      })
+      .catch(error => {
+        console.error('Error al eliminar el programador', error);
+      });
+  };
 
   return (
     <>
@@ -66,7 +76,14 @@ const Programadores = () => {
                   </td>
                   <td className={classes}>
                     {/* Acciones aquí */}
-                  </td>
+                    <button
+                      type="button"
+                      onClick={() => eliminarProgramador(programador.id)} // Asume que cada programador tiene un `id`
+                      className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    >
+                      Eliminar
+                    </button>
+                    </td>
                 </tr>
               );
             })}

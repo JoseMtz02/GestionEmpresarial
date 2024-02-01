@@ -76,25 +76,61 @@ app.get('/obtenerUsuarios', (peticion, respuesta) => {
     });
   });
  
-  app.delete('/eliminarUsuario/:id', (peticion, respuesta) => {
-    const id = peticion.params.id; // Accede al ID desde params, no desde el cuerpo de la solicitud
-
-    console.log(`Intentando eliminar usuario con ID: ${id}`); // Log para depuración
-
-    const sql = 'DELETE FROM usuarios WHERE id_usuario = ?';
-    connection.query(sql, [id], (error, resultado) => {
-        if (error) {
-            console.error("Error al eliminar el usuario:", error);
-            return respuesta.status(500).json({ mensaje: 'Error al eliminar usuario' });
-        }
-
-        if (resultado.affectedRows > 0) {
-            return respuesta.json({ Estatus: 'CORRECTO', Mensaje: 'Usuario eliminado correctamente' });
-        } else {
-            return respuesta.status(404).json({ mensaje: 'Usuario no encontrado' });
-        }
+  app.delete('/eliminarUsuario/:id', async (peticion, respuesta) => {
+    const id = peticion.params.id; // Accede al ID desde params
+  
+    // Primero, encuentra los id_miembro asociados al id_usuario a eliminar
+    const sqlBuscarMiembros = 'SELECT id_miembro FROM miembros_equipo WHERE id_usuario = ?';
+    connection.query(sqlBuscarMiembros, [id], (error, miembros) => {
+      if (error) {
+        console.error("Error al buscar miembros del equipo:", error);
+        return respuesta.status(500).json({ mensaje: 'Error al buscar miembros del equipo asociados al usuario' });
+      }
+  
+      // Si hay miembros asociados, procede a eliminar sus asignaciones
+      const borrados = miembros.map(miembro => {
+        return new Promise((resolve, reject) => {
+          const sqlEliminarAsignacion = 'DELETE FROM asignaciones WHERE id_miembro = ?';
+          connection.query(sqlEliminarAsignacion, [miembro.id_miembro], (error, resultado) => {
+            if (error) {
+              return reject(error);
+            }
+            resolve(resultado);
+          });
+        });
+      });
+  
+      Promise.all(borrados).then(() => {
+        // Una vez eliminadas las asignaciones, elimina los miembros del equipo
+        const sqlEliminarMiembros = 'DELETE FROM miembros_equipo WHERE id_usuario = ?';
+        connection.query(sqlEliminarMiembros, [id], (error, resultado) => {
+          if (error) {
+            console.error("Error al eliminar el miembro del equipo:", error);
+            return respuesta.status(500).json({ mensaje: 'Error al eliminar miembro del equipo' });
+          }
+    
+          // Luego, elimina el usuario
+          const sqlEliminarUsuario = 'DELETE FROM usuarios WHERE id_usuario = ?';
+          connection.query(sqlEliminarUsuario, [id], (error, resultado) => {
+            if (error) {
+              console.error("Error al eliminar el usuario:", error);
+              return respuesta.status(500).json({ mensaje: 'Error al eliminar usuario' });
+            }
+    
+            if (resultado.affectedRows > 0) {
+              respuesta.json({ Estatus: 'CORRECTO', Mensaje: 'Usuario y referencias eliminados correctamente' });
+            } else {
+              respuesta.status(404).json({ mensaje: 'Usuario no encontrado' });
+            }
+          });
+        });
+      }).catch(error => {
+        console.error("Error al eliminar asignaciones:", error);
+        return respuesta.status(500).json({ mensaje: 'Error al eliminar asignaciones de miembros del equipo' });
+      });
     });
-});
+  });
+  
 
 // Editar usuarios
 app.patch('/editarUsuario/:id', (peticion, respuesta) => {
@@ -174,6 +210,7 @@ app.post('/Login', (peticion, respuesta) => {
 app.get('/Programadores', (req, res) => {
   const sql = `
     SELECT 
+      me.id_miembro AS id,  
       me.nombre AS programador, 
       p.nombre_proyecto AS proyecto, 
       p.fecha_inicio AS fechaDeInicio, 
@@ -190,7 +227,6 @@ app.get('/Programadores', (req, res) => {
 
   connection.query(sql, (error, resultados) => {
     if (error) {
-      // Maneja cualquier error que ocurra durante la consulta
       console.error("Error en la consulta:", error.message);
       return res.status(500).json({ mensaje: 'Error al obtener los programadores' });
     }
@@ -199,6 +235,7 @@ app.get('/Programadores', (req, res) => {
     res.json(resultados);
   });
 });
+
 
 // Iniciar server
 const PORT = 8080;
