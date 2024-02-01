@@ -9,7 +9,7 @@ import Programadores from './views/Programadores';
 import Analistas from './views/Analistas';
 import Diseñadores from './views/Diseñadores';
 import LoginComponent from './views/Login';
-import AgregarUsuarios from './views/AgregarUsuarios';
+import AgregarUsuarios from './components/AgregarUsuarios';
 import Bread from './components/Bread';
 import AssigSideTable from './components/AssigSideTable';
 import ModalCrud from './components/ModalCrud';
@@ -17,8 +17,8 @@ import CardComentUser from './components/CardComentUser';
 import Recursos from './views/Recursos';
 import DashboardAdmin from './views/DashboardAdmin';
 import NavAdmin from './components/NavAdmin';
-import VistaAdmin from './views/VistaAdmin';
-
+import HeaderAdmin from './components/HeaderAdmin';
+import Usuarios from './views/Usuarios';
 
 function App() {
 
@@ -41,7 +41,9 @@ function App() {
         <Route path='/Dashboard' element={<DashboardAdmin/>}></Route>
         <Route path='/Recursos' element={<Recursos/>}></Route>
         <Route path='/NavAdmin' element={<NavAdmin/>}></Route>
-        <Route path='/VistaAdmin' element={<VistaAdmin/>}></Route>
+        <Route path='/VistaAdmin' element={<NavAdmin/>}></Route>
+        <Route path='/HeaderAdmin' element={<HeaderAdmin/>}></Route>
+        <Route path='/Usuarios' element={<Usuarios/>}></Route>
         
        
         

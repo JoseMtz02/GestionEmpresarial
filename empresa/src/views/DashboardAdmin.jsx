@@ -1,12 +1,12 @@
 import React from "react";
 import NavAdmin from "../components/NavAdmin";
-import VistaAdmin from "./VistaAdmin";
-import Header from "../components/header";
+import VistaAdmin from "./VistaAdmin";  
+import HeaderAdmin from "../components/HeaderAdmin";
 
 function DashboardAdmin() {
   return (
     <>
-   <Header></Header>
+   <HeaderAdmin></HeaderAdmin>
     <VistaAdmin></VistaAdmin>
       <NavAdmin></NavAdmin>
       
