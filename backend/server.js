@@ -169,6 +169,37 @@ app.post('/Login', (peticion, respuesta) => {
   });
 });
 
+//Obtenemos los datos de programadores para luego mapear en la view "Programadores.jsx"
+
+app.get('/Programadores', (req, res) => {
+  const sql = `
+    SELECT 
+      me.nombre AS programador, 
+      p.nombre_proyecto AS proyecto, 
+      p.fecha_inicio AS fechaDeInicio, 
+      p.estado AS estadoDelProyecto 
+    FROM 
+      miembros_equipo me
+    JOIN 
+      asignaciones a ON me.id_miembro = a.id_miembro
+    JOIN 
+      proyectos p ON a.id_proyecto = p.id_proyecto
+    WHERE 
+      me.especialidad = 'Programador';
+  `;
+
+  connection.query(sql, (error, resultados) => {
+    if (error) {
+      // Maneja cualquier error que ocurra durante la consulta
+      console.error("Error en la consulta:", error.message);
+      return res.status(500).json({ mensaje: 'Error al obtener los programadores' });
+    }
+
+    // Envía los resultados de la consulta al cliente
+    res.json(resultados);
+  });
+});
+
 // Iniciar server
 const PORT = 8080;
 app.listen(PORT, () => {
