@@ -1,48 +1,46 @@
-import React from "react";
-import { Card, Typography } from "@material-tailwind/react";
+import React from 'react';
 import Header from "../components/header";
+import { Card, Typography } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Programador", "Proyecto", "Fecha de Inicio", "Estado del Proyecto", "Acciones"];
+const TABLE_HEAD = ["Tipo de Recurso", "Recurso", "Asignado a Proyecto", "Estado del Proyecto", "Disponibilidad", "Acciones"];
 
 const TABLE_ROWS = [
     {
-      name: "John Michael",
-      proyecto: "Manager",
-      date: "23/04/18",
+      tipo: "Económico",
+      recurso: "Fondos",
+      asignado: "SI",
       status: "enable",
+      disponibilidad: 1,
     },
     {
-      name: "Alexa Liras",
-      proyecto: "Developer",
-      date: "23/04/18",
-      status: "disable",
-    },
-    {
-      name: "Laurent Perrier",
-      proyecto: "Executive",
-      date: "19/09/17",
-      status: "progress",
-    },
-    {
-      name: "Michael Levi",
-      proyecto: "Developer",
-      date: "24/12/08",
-      status: "disable",
-    },
-    {
-      name: "Richard Gran",
-      proyecto: "Manager",
-      date: "04/10/21",
+        tipo: "Económico",
+        recurso: "Fondos",
+        asignado: "SI",
+        status: "enable",
+        disponibilidad: 1,
+      }, 
+      {
+      tipo: "Económico",
+      recurso: "Fondos",
+      asignado: "SI",
       status: "enable",
+      disponibilidad: 1,
     },
+    {
+        tipo: "Económico",
+        recurso: "Fondos",
+        asignado: "SI",
+        status: "enable",
+        disponibilidad: 1,
+      },
   ];
 
-function Programadores (){
-    return (
-        <>
-        <Header> </Header>
-
-        <Card className="h-full w-full overflow-scroll">
+function Recursos () {
+    return(
+    <>
+    <Header></Header>
+    
+    <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -63,19 +61,19 @@ function Programadores (){
           </tr>
         </thead>
         <tbody>
-          {TABLE_ROWS.map(({ name, proyecto, date, status, accion }, index) => {
+          {TABLE_ROWS.map(({ tipo, recurso, asignado, status, disponibilidad, accion }, index) => {
             const isLast = index === TABLE_ROWS.length - 1;
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
  
             return (
-              <tr key={name}>
+              <tr key={tipo}>
                 <td className={classes}>
                   <Typography
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {name}
+                    {tipo}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -84,7 +82,7 @@ function Programadores (){
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {proyecto}
+                    {recurso}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -93,7 +91,7 @@ function Programadores (){
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {date}
+                    {asignado}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -107,14 +105,24 @@ function Programadores (){
                 </td>
                 <td className={classes}>
                 <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal"
+                  >
+                    {disponibilidad}
+                  </Typography>
+                </td>
+                <td className={classes}>
+                <Typography
                     as="a"
                     href="#"
                     variant="small"
                     color="blue-gray"
                     className="font-medium"
                   >
-                    Edit
+                    Editar
                   </Typography>
+
                   <Typography
                     as="a"
                     href="#"
@@ -122,9 +130,18 @@ function Programadores (){
                     color="blue-gray"
                     className="font-medium"
                   >
-                    Delete
+                    Eliminar
                   </Typography>
-                 
+                  
+                  <Typography
+                    as="a"
+                    href="#"
+                    variant="small"
+                    color="blue-gray"
+                    className="font-medium"
+                  >
+                    Agregar
+                  </Typography>
                 </td>
               </tr>
             );
@@ -133,8 +150,9 @@ function Programadores (){
       </table>
     </Card>
 
-        </>
-
-    );
+    </>
+ 
+	);
 };
-export default Programadores;
+
+export default Recursos;

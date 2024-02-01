@@ -30,11 +30,7 @@ function Header() {
             <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <a href="" className="flex items-center">
-                        <img
-                            src="https://flowbite.com/docs/images/logo.svg"
-                            className="h-8"
-                            alt="Flowbite Logo"
-                        />
+                        
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                             Flowbite
                         </span>
@@ -61,18 +57,18 @@ function Header() {
                             <Link to = "/Proyectos" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Proyectos
                             </Link>
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <Link to = "/Recursos"  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Recursos
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="navbar-multi-level">
                         <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
                             <li>
-                                <a href="#" className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Iniciar Sesión</a>
+                                <Link to = "/Login" className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Iniciar Sesión</Link>
                             </li>
                             <li>
-                                <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Calendario Semanal</a>
+                                <Link to = "/Asignacion" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Calendario Semanal</Link>
                             </li>
                             <li>
                                 <Link to = "/Contactanos" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Atención Al Cliente</Link>

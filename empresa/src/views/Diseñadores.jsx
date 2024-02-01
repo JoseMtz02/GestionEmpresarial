@@ -124,15 +124,7 @@ function Diseñadores (){
                   >
                     Delete
                   </Typography>
-                  <Typography
-                    as="a"
-                    href="#"
-                    variant="small"
-                    color="blue-gray"
-                    className="font-medium"
-                  >
-                    View
-                  </Typography>
+                  
                 </td>
               </tr>
             );

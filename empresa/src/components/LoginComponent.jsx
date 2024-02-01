@@ -1,33 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ImagLogin from '../assets/ImagLogin.jpeg';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 
 const LoginComponent = () => {
-    const [campos, setCampo ] = useState ({
-        matricula: '',
-        contrasenia: ''
-    });
-
-    const Navegacion = useNavigate();
-    const [error,setError] = useState('');
-
-    const acceder = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:8080/Login', campos)
-        .then(respuesta => {
-            if(respuesta.data.status === 'correcto'){
-                localStorage.setItem('token',respuesta.data.usuario);
-                console.log('respuesta.data.usuario')
-                Navegacion('/Asignacion')
-            }else{
-                setError(respuesta.data.error);
-            }
-        })
-        .catch(error => console.log('Hay un error'));
-    }
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
       <div className="flex flex-col items-center justify-center bg-gray-100 rounded-tl-lg rounded-bl-lg p-4">
@@ -44,7 +19,7 @@ const LoginComponent = () => {
               viewBox="0 0 24 24"
               height="1em"
               width="1em"
-            //   xmlns="http://www.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <g>
                 <path fill="none" d="M0 0h24v24H0z" />
@@ -60,23 +35,19 @@ const LoginComponent = () => {
           </p>
         </div>
         <div className="w-full mb-8">
-          <form onSubmit={acceder}>
+          <form>
             <div className="flex justify-center mb-4">
               <input
-                type="text"
+                type="email"
                 className="w-full max-w-md py-2 px-4 rounded-lg outline-none"
-                placeholder="Matrícula"
-                required = "required"
-                onChange = {(e) => setCampo({...campos,matricula:e.target.value})}
+                placeholder="Correo electrónico"
               />
             </div>
             <div className="flex justify-center mb-6">
               <input
                 type="password"
                 className="w-full max-w-md py-2 px-4 rounded-lg outline-none"
-                placeholder="Contraseña"
-                required = "required"
-                onChange = {(e) => setCampo({...campos,contrasenia:e.target.value})}
+                placeholder="Password"
               />
             </div>
             <div className="w-full max-w-md mx-auto flex items-center justify-between text-gray-500 mb-8">
@@ -107,4 +78,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
+export default LoginComponent;

@@ -14,12 +14,12 @@ html {
     box-sizing: inherit;
   }
 body{
-    font-size: 62.5%;
+    font-size: 90%;
     display: center;
 }
 h1{
     text-align: center;
-    font-size: 3.5rem;
+    font-size: 5.5rem;
     text-transform: uppercase;
     color: var(--azulmarino);
 }
@@ -28,70 +28,7 @@ h1{
     max-width: 120rem;
     margin:  auto;
 }
-/* Barra */
-.barra{
-    display: flex;
-    justify-content: space-between;
-}
-.logo{
-    width: 250px;
-  padding: .2rem;
-  margin: -92px;
-    
-}
-/* Buscador */
-.contenido-buscar {
-    background-color: var(--gris1);
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-    font-size: 1rem;
-    margin: 0 0;
-}
-.buscar{
-    color: white;
-    padding: .5rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-.buscar input[type="text"]{
-    flex: 1 1 0;
-    margin: 0 .5rem;
-    border-radius: .7rem;
-    border: none;
-    padding: .2rem;
-}
-.buscar input[type="submit"]{
-/*     background-color: rgb(252, 126, 16); */
-    background-color: var(--azulpastel);
-    padding: .2rem 1rem;
-    border: none;
-    border-radius: .5rem;
-    color: white;
-    cursor: pointer;
-}
-.buscar input[type="submit"]:hover{
-    background-color: white;
-    color: var(--naranja);
-}
-img{
-    width: 100%;
-}
-.boton{
-    background-color: var(--naranja);
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    text-decoration: none;
-    color: #000000;
-    font-weight: 900;
-    display: block;
-    text-align: center;
-    border-radius: 1rem;
-}
-.boton:hover{
-    background-color: white;
-    color: var(--azulmarino);
-}
+
 .imagen img{
     border-radius: 2rem;
     width: 85%;
@@ -120,6 +57,10 @@ h2{
     background-color: var(--grisClaro);
     margin-bottom: 2rem;
     border-radius: 1rem;
+}
+.anuncio:hover{
+    background-color: white;
+    color: var(--azulmarino);
 }
 .contenido_anuncio{
     padding: 1rem;
@@ -258,6 +199,12 @@ grid-column: 1 / 3;
         padding: 1em;
         text-align: left;
     }
-
+    .bloquesillos{
+        background-color: #00c3ff;
+    }
+    .bloquesillos:hover{
+        background-color: white;
+        color: var(--azulmarino);
+    }
     
 }

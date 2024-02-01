@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import Header from "../components/header";
-
 const TABLE_HEAD = ["Analista", "Proyecto", "Fecha de Inicio", "Estado del Proyecto", "Acciones"];
 
 const TABLE_ROWS = [
@@ -40,8 +39,8 @@ const TABLE_ROWS = [
 function Analistas (){
     return (
         <>
+        
         <Header> </Header>
-
         <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
@@ -49,7 +48,7 @@ function Analistas (){
             {TABLE_HEAD.map((head) => (
               <th
                 key={head}
-                className="border-b border-blue-gray-100 bg-blue-gray-50 p-"
+                className="border-b border-black-900 bg-black-50 p-"
               >
                 <Typography
                   variant="small"
@@ -124,15 +123,7 @@ function Analistas (){
                   >
                     Delete
                   </Typography>
-                  <Typography
-                    as="a"
-                    href="#"
-                    variant="small"
-                    color="blue-gray"
-                    className="font-medium"
-                  >
-                    View
-                  </Typography>
+                  
                   
                 </td>
               </tr>
@@ -141,6 +132,7 @@ function Analistas (){
         </tbody>
       </table>
     </Card>
+
 
         </>
     );
