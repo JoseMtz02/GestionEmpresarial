@@ -157,3 +157,28 @@ INSERT INTO asignaciones (id_proyecto, id_miembro) VALUES
 SELECT * FROM miembros_equipo;
 SELECT * FROM asignaciones;
 SELECT * FROM proyectos;
+
+CREATE TABLE ProgramadoresAux (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    proyecto VARCHAR(255),
+    fechaDeInicio DATE,
+    estadoDelProyecto VARCHAR(50)
+);
+
+DELIMITER $$
+
+CREATE TRIGGER AfterInsertProgramador
+AFTER INSERT ON miembros_equipo
+FOR EACH ROW
+BEGIN
+    IF NEW.especialidad = 'Programador' THEN
+        INSERT INTO ProgramadoresAux (nombre, proyecto, fechaDeInicio, estadoDelProyecto)
+        SELECT NEW.nombre, p.nombre_proyecto, p.fecha_inicio, p.estado
+        FROM asignaciones a
+        JOIN proyectos p ON a.id_proyecto = p.id_proyecto
+        WHERE a.id_miembro = NEW.id_miembro;
+    END IF;
+END$$
+
+DELIMITER ;

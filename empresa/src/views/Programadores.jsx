@@ -16,20 +16,16 @@ const Programadores = () => {
   });
 
   useEffect(() => {
-    const fetchProgramadores = () => {
-      axios.get('http://localhost:8080/Programadores')
-        .then(response => {
-          setProgramadores(response.data);
-        })
-        .catch(error => {
-          console.error('Error al obtener los datos de los programadores', error);
-        });
+    const fetchProgramadores = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/Programadores');
+        setProgramadores(response.data);
+      } catch (error) {
+        console.error('Error al obtener los datos de los programadores:', error);
+      }
     };
 
     fetchProgramadores();
-    const intervalId = setInterval(fetchProgramadores, 60000); // Actualiza cada 60 segundos
-
-    return () => clearInterval(intervalId); // Limpieza al desmontar el componente
   }, []);
 
   const handleInputChange = (e) => {
@@ -40,128 +36,126 @@ const Programadores = () => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    axios.patch(`http://localhost:8080/editarUsuario/${currentProgramador.id}`, currentProgramador)
-      .then(() => {
-        setIsModalOpen(false);
-        setCurrentProgramador({ id: '', nombre_usuario: '', contrasenia: '', rol: '' }); // Reset form
-        setProgramadores([]); // Reset programadores to force re-fetch
-      })
-      .catch(error => {
-        console.error('Error al editar el programador', error);
-      });
+    try {
+      await axios.patch(`http://localhost:8080/editarUsuario/${currentProgramador.id}`, currentProgramador);
+      setIsModalOpen(false);
+      // Recargar los programadores después de una edición exitosa
+      const response = await axios.get('http://localhost:8080/Programadores');
+      setProgramadores(response.data);
+    } catch (error) {
+      console.error('Error al editar el programador:', error);
+    }
   };
 
   const abrirModalParaEditar = (programador) => {
-    setCurrentProgramador({
-      id: programador.id,
-      nombre_usuario: programador.nombre_usuario,
-      contrasenia: '', // La contraseña no se debe pre-cargar
-      rol: programador.rol
-    });
+    setCurrentProgramador(programador);
     setIsModalOpen(true);
   };
 
-  const eliminarProgramador = (id) => {
-    axios.delete(`http://localhost:8080/eliminarUsuario/${id}`)
-      .then(() => {
-        setProgramadores(programadores.filter(programador => programador.id !== id));
-      })
-      .catch(error => {
-        console.error('Error al eliminar el programador', error);
-      });
+  const eliminarProgramador = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/eliminarUsuario/${id}`);
+      const response = await axios.get('http://localhost:8080/Programadores');
+      setProgramadores(response.data);
+    } catch (error) {
+      console.error('Error al eliminar el programador:', error);
+    }
   };
 
-    return (
-      <>
-        <Header />
-        <Card className="h-full w-full overflow-scroll">
-          <table className="w-full min-w-max table-auto text-left">
-            <thead>
-              <tr>
-                {TABLE_HEAD.map((head) => (
-                  <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 px-4 py-2">
-                    <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70">
-                      {head}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {programadores.map((programador, index) => (
-                <tr key={index}>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {programador.programador}
-                    </Typography>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {programador.proyecto}
-                    </Typography>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {new Date(programador.fechaDeInicio).toLocaleDateString()}
-                    </Typography>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {programador.estadoDelProyecto}
-                    </Typography>
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    <button
-                      type="button"
-                      onClick={() => eliminarProgramador(programador.id)}
-                      className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                    >
-                      Eliminar
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => abrirModalParaEditar(programador)}
-                      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
-                    >
-                      Editar
-                    </button>
-                  </td>
-                </tr>
+  return (
+    <>
+      <Header />
+      <Card className="h-full w-full overflow-scroll">
+        <table className="w-full min-w-max table-auto text-left">
+          <thead>
+            <tr>
+              {TABLE_HEAD.map((head) => (
+                <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 px-4 py-2">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {head}
+                  </Typography>
+                </th>
               ))}
-            </tbody>
-          </table>
-        </Card>
-        {isModalOpen && (
+            </tr>
+          </thead>
+          <tbody>
+            {programadores.map((programador, index) => (
+              <tr key={index}>
+                <td className="p-4 border-b border-blue-gray-50">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {programador.programador || 'Sin nombre'}
+                  </Typography>
+                </td>
+                <td className="p-4 border-b border-blue-gray-50">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {programador.proyecto || 'Sin proyecto'}
+                  </Typography>
+                </td>
+                <td className="p-4 border-b border-blue-gray-50">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {new Date(programador.fechaDeInicio).toLocaleDateString() || 'Sin fecha'}
+                  </Typography>
+                </td>
+                <td className="p-4 border-b border-blue-gray-50">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {programador.estadoDelProyecto || 'Sin estado'}
+                  </Typography>
+                </td>
+                <td className="p-4 border-b border-blue-gray-50">
+                  <button
+                    type="button"
+                    onClick={() => eliminarProgramador(programador.id)}
+                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => abrirModalParaEditar(programador)}
+                    className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                  >
+                    Editar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Card>
+      {isModalOpen && (
         <div className="modal-backdrop">
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={() => setIsModalOpen(false)}>&times;</span>
               <form onSubmit={handleFormSubmit}>
                 <div>
-                  <label>Nombre de Usuario:</label>
+                  <label htmlFor="nombre_usuario">Nombre de Usuario:</label>
                   <input
                     type="text"
+                    id="nombre_usuario"
                     name="nombre_usuario"
-                    value={currentProgramador?.nombre_usuario || ''}
+                    value={currentProgramador.nombre_usuario || ''}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div>
-                  <label>Contraseña:</label>
+                  <label htmlFor="contrasenia">Contraseña:</label>
                   <input
                     type="password"
+                    id="contrasenia"
                     name="contrasenia"
-                    value={currentProgramador?.contrasenia || ''}
+                    value={currentProgramador.contrasenia || ''}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div>
-                  <label>Rol:</label>
+                  <label htmlFor="rol">Rol:</label>
                   <select
+                    id="rol"
                     name="rol"
-                    value={currentProgramador?.rol || ''}
+                    value={currentProgramador.rol || ''}
                     onChange={handleInputChange}
                   >
                     <option value="">Seleccione un Rol</option>

@@ -209,34 +209,15 @@ app.post('/Login', (peticion, respuesta) => {
 //Obtenemos los datos de programadores para luego mapear en la view "Programadores.jsx"
 
 app.get('/Programadores', (req, res) => {
-  const sql = `
-    SELECT 
-      me.id_miembro AS id,  
-      me.nombre AS programador, 
-      p.nombre_proyecto AS proyecto, 
-      DATE_FORMAT(p.fecha_inicio, '%Y-%m-%d') AS fechaDeInicio,
-      p.estado AS estadoDelProyecto 
-    FROM 
-      miembros_equipo me
-    JOIN 
-      asignaciones a ON me.id_miembro = a.id_miembro
-    JOIN 
-      proyectos p ON a.id_proyecto = p.id_proyecto
-    WHERE 
-      me.especialidad = 'Programador';
-  `;
-
+  const sql = `SELECT * FROM ProgramadoresAux`;
   connection.query(sql, (error, resultados) => {
-    if (error) {
-      console.error("Error en la consulta:", error.message);
-      return res.status(500).json({ mensaje: 'Error al obtener los programadores' });
-    }
-
-    // Envía los resultados de la consulta al cliente
-    res.json(resultados);
+      if (error) {
+          console.error("Error en la consulta:", error.message);
+          return res.status(500).json({ mensaje: 'Error al obtener los programadores' });
+      }
+      res.json(resultados);
   });
 });
-
 
 // Iniciar server
 const PORT = 8080;
