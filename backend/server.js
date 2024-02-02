@@ -173,9 +173,16 @@ app.post('/Login', (req, res) => {
 app.get('/Programadores', (req, res) => {
   const sql = `
     SELECT 
+<<<<<<< HEAD
       me.nombre AS programador, 
       p.nombre_proyecto AS proyecto, 
       p.fecha_inicio AS fechaDeInicio, 
+=======
+      me.id_miembro AS id,  
+      me.nombre AS programador, 
+      p.nombre_proyecto AS proyecto, 
+      DATE_FORMAT(p.fecha_inicio, '%Y-%m-%d') AS fechaDeInicio,
+>>>>>>> c65a01799d0ff09e784ef7694d8a34125231c388
       p.estado AS estadoDelProyecto 
     FROM 
       miembros_equipo me
