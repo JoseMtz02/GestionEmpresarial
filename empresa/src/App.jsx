@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Asignacion from './views/Asignacion';
 import Equipos from './views/Equipos';
 import Proyectos from './views/Proyectos';
@@ -17,10 +17,11 @@ import CardComentUser from './components/CardComentUser';
 import Recursos from './views/Recursos';
 import DashboardAdmin from './views/DashboardAdmin';
 import NavAdmin from './components/NavAdmin';
-import HeaderAdmin from './components/HeaderAdmin';
-import Usuarios from './views/Usuarios';
+import VistaAdmin from './views/VistaAdmin';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
+
 
   return (
     <BrowserRouter>
@@ -32,7 +33,7 @@ function App() {
         <Route path='/Programadores' element={<Programadores/>}></Route>
         <Route path='/Analistas' element={<Analistas/>}></Route>
         <Route path='/Diseñadores' element={<Diseñadores/>}></Route>
-        <Route path='/Login' element={<LoginComponent/>}></Route>
+        <Route path='/Login' element={ <LoginComponent/> }/>
         <Route path='/AgregarUsuarios' element={<AgregarUsuarios/>}></Route>
         <Route path='/Bread' element={<Bread/>}></Route>
         <Route path='/Asignacion' element={<AssigSideTable/>}></Route>
@@ -41,9 +42,7 @@ function App() {
         <Route path='/Dashboard' element={<DashboardAdmin/>}></Route>
         <Route path='/Recursos' element={<Recursos/>}></Route>
         <Route path='/NavAdmin' element={<NavAdmin/>}></Route>
-        <Route path='/VistaAdmin' element={<NavAdmin/>}></Route>
-        <Route path='/HeaderAdmin' element={<HeaderAdmin/>}></Route>
-        <Route path='/Usuarios' element={<Usuarios/>}></Route>
+        <Route path='/VistaAdmin' element={<VistaAdmin/>}></Route>
         
        
         
@@ -53,4 +52,5 @@ function App() {
   )
 }
 
-export default App
+export default App;
+

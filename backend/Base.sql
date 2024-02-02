@@ -27,29 +27,13 @@ CREATE TABLE equipos (
   descripcion TEXT
 );
 
-CREATE TABLE roles (
-  id_rol INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_rol VARCHAR(100) UNIQUE NOT NULL
-);
-
-CREATE TABLE usuarios (
-  id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_usuario VARCHAR(100) NOT NULL,
-  contrasenia VARCHAR(255) NOT NULL,
-  rol_id INT,
-  matricula VARCHAR(255) UNIQUE,
-  FOREIGN KEY (rol_id) REFERENCES roles(id_rol)
-);
-
 CREATE TABLE miembros_equipo (
   id_miembro INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
   id_equipo INT,
-  id_usuario INT, 
   especialidad ENUM('Programador', 'Diseñador', 'Analista') NOT NULL,
   carga_trabajo INT NULL,
-  FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo),
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE 
+  FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo)
 );
 
 CREATE TABLE asignaciones (
@@ -70,6 +54,22 @@ CREATE TABLE recursos (
   disponibilidad INT,
   FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto)
 );
+
+CREATE TABLE roles (
+  id_rol INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_rol VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE usuarios (
+  id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_usuario VARCHAR(100) NOT NULL,
+  contrasenia VARCHAR(255) NOT NULL,
+  rol_id INT,
+  matricula VARCHAR(255) UNIQUE,
+  FOREIGN KEY (rol_id) REFERENCES roles(id_rol)
+);
+
+INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Líder'), ('Miembro');
 
 CREATE TABLE lideres_equipos (
   id_lider_equipo INT PRIMARY KEY AUTO_INCREMENT,
@@ -107,8 +107,6 @@ CREATE TABLE secuencia_matricula (
   siguiente_matricula INT NOT NULL
 );
 
-INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Líder'), ('Miembro');
-
 -- Inicialización de la tabla auxiliar con el primer valor de matrícula
 INSERT INTO secuencia_matricula (siguiente_matricula) VALUES (1);  -- Comienza con 1
 
@@ -120,11 +118,26 @@ FOR EACH ROW
 BEGIN
   DECLARE next_val INT;
   SELECT siguiente_matricula INTO next_val FROM secuencia_matricula ORDER BY id DESC LIMIT 1;
-  SET NEW.matricula = CONCAT('2239', LPAD(next_val, 1, '0'));
+  SET NEW.matricula = CONCAT('2239', next_val);
   UPDATE secuencia_matricula SET siguiente_matricula = siguiente_matricula + 1 ORDER BY id DESC LIMIT 1;
 END$$
 DELIMITER ;
 
+-- Iniciamos la inserción de datos --
+
+USE empresa_proyec;
+
+-- Crear equipos
+INSERT INTO equipos (nombre_equipo, descripcion) VALUES 
+('Equipo Desarrollo 1', 'Equipo dedicado al desarrollo de software'),
+('Equipo Desarrollo 2', 'Equipo dedicado al desarrollo de nuevos proyectos');
+
+-- Crear proyectos
+INSERT INTO proyectos (nombre_proyecto, descripcion, fecha_inicio, estado) VALUES 
+('Proyecto Alfa', 'Primer proyecto importante', '2022-01-01', 'En Curso'),
+('Proyecto Beta', 'Segundo proyecto importante', '2022-02-01', 'Pendiente');
+
+-- Insertar usuarios, incluyendo el Administrador y la Líder que son programadores
 INSERT INTO usuarios (nombre_usuario, contrasenia, rol_id) VALUES 
 ('Guillermo', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Administrador')),
 ('Alisson', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Líder')),
@@ -132,21 +145,15 @@ INSERT INTO usuarios (nombre_usuario, contrasenia, rol_id) VALUES
 ('Benito', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Miembro')),
 ('José', '$2b$10$suyd4N31tMji7subuKL0e.UQBazelb.9vLHsjarvfWQX2QpUHyvW2', (SELECT id_rol FROM roles WHERE nombre_rol = 'Miembro'));
 
-INSERT INTO proyectos (nombre_proyecto, descripcion, fecha_inicio, estado) VALUES 
-('Proyecto Alfa', 'Este es el primer proyecto importante de la empresa, con un enfoque en desarrollo de software.', '2023-01-01', 'En Curso'),
-('Proyecto Beta', 'Este es el segundo proyecto importante, con un enfoque en investigación y desarrollo.', '2023-02-01', 'Pendiente');
+-- Insertar miembros del equipo
+INSERT INTO miembros_equipo (nombre, id_equipo, especialidad) VALUES 
+('Guillermo', 1, 'Programador'),
+('Alisson', 1, 'Programador'),
+('Raúl', 2, 'Programador'),
+('Benito', 2, 'Programador'),
+('José', 2, 'Programador');
 
-INSERT INTO equipos (nombre_equipo, descripcion) VALUES 
-('Equipo Desarrollo 1', 'Equipo dedicado al desarrollo de software'),
-('Equipo Desarrollo 2', 'Equipo dedicado al desarrollo de nuevos proyectos');
-
-INSERT INTO miembros_equipo (nombre, id_equipo, id_usuario, especialidad) VALUES 
-('Guillermo', 1, 1, 'Programador'),
-('Alisson', 1, 2, 'Programador'),
-('Raúl', 2, 3, 'Programador'),
-('Benito', 2, 4, 'Programador'),
-('José', 2, 5, 'Programador');
-
+-- Asignar miembros del equipo a proyectos
 INSERT INTO asignaciones (id_proyecto, id_miembro) VALUES 
 ((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Alfa'), 1),
 ((SELECT id_proyecto FROM proyectos WHERE nombre_proyecto = 'Proyecto Beta'), 2),

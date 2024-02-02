@@ -1,8 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ImagLogin from '../assets/ImagLogin.jpeg';
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginComponent = () => {
+  const navigate = useNavigate();
+  const [body, setBody] = useState({
+    matricula: '',
+    contrasenia: '',
+  });
+
+  const handleTokenRedirect = (decodedToken) => {
+    if (decodedToken.rol === 1) {
+      navigate('/Asignacion');
+    } else if (decodedToken.rol === 2) {
+      navigate('/Equipos');
+    } else {
+      console.log('Rol desconocido, no se puede redirigir.');
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    axios.post('http://localhost:8080/Login', body)
+      .then(autenticacion => {
+        const respuesta = autenticacion.data.Status;
+        console.log(respuesta);
+        const usuario = autenticacion.data.token;
+  
+        if (respuesta === 'correcto') {
+          localStorage.setItem('token', usuario);
+  
+          const decodedToken = JSON.parse(atob(usuario.split('.')[1]));
+          console.log(decodedToken);
+  
+          if (decodedToken.rol === 1) {
+            navigate('/Dashboard');
+          } else if (decodedToken.rol === 2) {
+
+            navigate('/Equipos');
+          } else if (decodedToken.rol === 3) {
+
+            navigate('/Equipos');
+          }else {
+            console.log('Rol desconocido, no se puede redirigir.');
+          }
+        } else {
+          console.log('No hay ningún usuario con ese post');
+        }
+      })
+      .catch(error => {
+        console.log(`Se detectó un error catastrófico: ${error}`);
+      });
+  };
+  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setBody({
+      ...body,
+      [name]: value,
+    });
+  };
+
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
       <div className="flex flex-col items-center justify-center bg-gray-100 rounded-tl-lg rounded-bl-lg p-4">
@@ -35,19 +97,25 @@ const LoginComponent = () => {
           </p>
         </div>
         <div className="w-full mb-8">
-          <form>
+          <form onClick={handleSubmit}>
             <div className="flex justify-center mb-4">
               <input
-                type="email"
+                type=""
+                name='matricula'
                 className="w-full max-w-md py-2 px-4 rounded-lg outline-none"
                 placeholder="Correo electrónico"
+                value={body.matricula}
+                onChange={handleChange}
               />
             </div>
             <div className="flex justify-center mb-6">
               <input
                 type="password"
+                name='contrasenia'
                 className="w-full max-w-md py-2 px-4 rounded-lg outline-none"
                 placeholder="Password"
+                value={body.contrasenia}
+                onChange={handleChange}
               />
             </div>
             <div className="w-full max-w-md mx-auto flex items-center justify-between text-gray-500 mb-8">
