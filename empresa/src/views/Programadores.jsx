@@ -8,20 +8,28 @@ const TABLE_HEAD = ["Programador", "Proyecto", "Fecha de Inicio", "Estado del Pr
 const Programadores = () => {
   const [programadores, setProgramadores] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentProgramador, setCurrentProgramador] = useState(null);
-
-  const cargarProgramadores = () => {
-    axios.get('http://localhost:8080/Programadores')
-      .then(response => {
-        setProgramadores(response.data);
-      })
-      .catch(error => {
-        console.error('Error al cargar los datos de los programadores', error);
-      });
-  };
+  const [currentProgramador, setCurrentProgramador] = useState({
+    id: '',
+    nombre_usuario: '',
+    contrasenia: '',
+    rol: ''
+  });
 
   useEffect(() => {
-    cargarProgramadores();
+    const fetchProgramadores = () => {
+      axios.get('http://localhost:8080/Programadores')
+        .then(response => {
+          setProgramadores(response.data);
+        })
+        .catch(error => {
+          console.error('Error al obtener los datos de los programadores', error);
+        });
+    };
+
+    fetchProgramadores();
+    const intervalId = setInterval(fetchProgramadores, 60000); // Actualiza cada 60 segundos
+
+    return () => clearInterval(intervalId); // Limpieza al desmontar el componente
   }, []);
 
   const handleInputChange = (e) => {
@@ -37,7 +45,8 @@ const Programadores = () => {
     axios.patch(`http://localhost:8080/editarUsuario/${currentProgramador.id}`, currentProgramador)
       .then(() => {
         setIsModalOpen(false);
-        cargarProgramadores();
+        setCurrentProgramador({ id: '', nombre_usuario: '', contrasenia: '', rol: '' }); // Reset form
+        setProgramadores([]); // Reset programadores to force re-fetch
       })
       .catch(error => {
         console.error('Error al editar el programador', error);
@@ -45,19 +54,25 @@ const Programadores = () => {
   };
 
   const abrirModalParaEditar = (programador) => {
-    setCurrentProgramador(programador);
+    setCurrentProgramador({
+      id: programador.id,
+      nombre_usuario: programador.nombre_usuario,
+      contrasenia: '', // La contraseña no se debe pre-cargar
+      rol: programador.rol
+    });
     setIsModalOpen(true);
   };
 
   const eliminarProgramador = (id) => {
     axios.delete(`http://localhost:8080/eliminarUsuario/${id}`)
       .then(() => {
-        cargarProgramadores();
+        setProgramadores(programadores.filter(programador => programador.id !== id));
       })
       .catch(error => {
         console.error('Error al eliminar el programador', error);
       });
   };
+
     return (
       <>
         <Header />

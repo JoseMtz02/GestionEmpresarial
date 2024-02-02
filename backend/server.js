@@ -210,21 +210,20 @@ app.post('/Login', (peticion, respuesta) => {
 
 app.get('/Programadores', (req, res) => {
   const sql = `
-  SELECT 
-  me.id_miembro AS id,  
-  me.nombre AS programador, 
-  p.nombre_proyecto AS proyecto, 
-  DATE_FORMAT(p.fecha_inicio, '%Y-%m-%d') AS fechaDeInicio, -- Formatea la fecha para una mejor legibilidad
-  p.estado AS estadoDelProyecto 
-FROM 
-  miembros_equipo me
-JOIN 
-  asignaciones a ON me.id_miembro = a.id_miembro
-JOIN 
-  proyectos p ON a.id_proyecto = p.id_proyecto
-WHERE 
-  me.especialidad = 'Programador';
-
+    SELECT 
+      me.id_miembro AS id,  
+      me.nombre AS programador, 
+      p.nombre_proyecto AS proyecto, 
+      DATE_FORMAT(p.fecha_inicio, '%Y-%m-%d') AS fechaDeInicio,
+      p.estado AS estadoDelProyecto 
+    FROM 
+      miembros_equipo me
+    JOIN 
+      asignaciones a ON me.id_miembro = a.id_miembro
+    JOIN 
+      proyectos p ON a.id_proyecto = p.id_proyecto
+    WHERE 
+      me.especialidad = 'Programador';
   `;
 
   connection.query(sql, (error, resultados) => {
