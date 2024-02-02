@@ -48,6 +48,7 @@ function Usuarios() {
               <td class="px-6 py-4"></td>
               <td class="px-6 py-4">
                 <div class="flex justify-evenly space-x-2">
+                  <Link to = "/EditUsuario">
                   <button
                     type="button"
                     data-modal-target="editUserModal"
@@ -56,6 +57,7 @@ function Usuarios() {
                   >
                     Editar
                   </button>
+                  </Link>
                   <button
                     type="button"
                     data-modal-show="deleteUserModal"
