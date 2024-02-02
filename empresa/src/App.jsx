@@ -18,6 +18,7 @@ import Recursos from './views/Recursos';
 import DashboardAdmin from './views/DashboardAdmin';
 import NavAdmin from './components/NavAdmin';
 import VistaAdmin from './views/VistaAdmin';
+import Usuarios from './views/Usuarios';
 import { useNavigate } from 'react-router-dom';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path='/Recursos' element={<Recursos/>}></Route>
         <Route path='/NavAdmin' element={<NavAdmin/>}></Route>
         <Route path='/VistaAdmin' element={<VistaAdmin/>}></Route>
+        <Route path='/Usuarios' element={<Usuarios/>}></Route>
         
        
         
